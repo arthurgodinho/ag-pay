@@ -1,0 +1,170 @@
+/**
+ * Otimizações Globais de CSS
+ * Melhorias de performance, acessibilidade e UX
+ */
+
+/* 1. Otimização de Renderização */
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2. Melhorias de Acessibilidade - Foco por Teclado */
+.keyboard-focus {
+    outline: 2px solid #00B2FF !important;
+    outline-offset: 2px !important;
+}
+
+/* 3. Otimização de Performance - Containment */
+.card,
+.sidebar,
+.modal {
+    contain: layout style paint;
+}
+
+/* 4. Lazy Loading de Imagens */
+img[loading="lazy"] {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+img[loading="lazy"].loaded {
+    opacity: 1;
+}
+
+/* 5. Otimização Mobile - Tap Highlight */
+@media (max-width: 640px) {
+    a, button {
+        -webkit-tap-highlight-color: rgba(0, 178, 255, 0.2);
+        touch-action: manipulation;
+    }
+}
+
+/* 6. Melhorias de Acessibilidade - Contraste */
+@media (prefers-contrast: high) {
+    * {
+        border-color: currentColor !important;
+    }
+}
+
+/* 7. Performance - Will-Change para Elementos Animados */
+.animate-float,
+.particle,
+.floating-icon {
+    will-change: transform;
+}
+
+/* 8. Otimização de Conexão Lenta */
+.slow-connection * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+}
+
+.slow-connection img[loading="lazy"] {
+    opacity: 1 !important;
+}
+
+/* 9. Melhorias de Acessibilidade - Redução de Movimento */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* 10. Otimização de Layout - Content Visibility */
+.content-hidden {
+    content-visibility: auto;
+    contain-intrinsic-size: 200px;
+}
+
+/* 11. Performance - GPU Acceleration para Transformações */
+.transform-gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 12. Melhorias de Acessibilidade - Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* 13. Otimização de Scroll - Smooth Scroll */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* 14. Performance - Optimize Font Loading */
+@font-face {
+    font-display: swap;
+}
+
+/* 15. Melhorias de Acessibilidade - Skip Link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #00B2FF;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* 16. Otimização Mobile - Viewport Units */
+@media (max-width: 640px) {
+    .vh-mobile {
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport height para mobile */
+    }
+}
+
+/* 17. Performance - Containment para Cards */
+.card-container {
+    contain: layout style paint;
+}
+
+/* 18. Melhorias de Acessibilidade - Focus Visible */
+:focus-visible {
+    outline: 2px solid #00B2FF;
+    outline-offset: 2px;
+}
+
+/* 19. Otimização de Performance - Backdrop Filter Fallback */
+@supports not (backdrop-filter: blur(10px)) {
+    .backdrop-blur {
+        background-color: rgba(21, 26, 35, 0.95);
+    }
+}
+
+/* 20. Performance - Optimize Reflows */
+.optimize-reflow {
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+

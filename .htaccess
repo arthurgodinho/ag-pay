@@ -1,0 +1,60 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # ============================================
+    # REDIRECIONAMENTOS DE DOMÍNIO E PROTOCOLO
+    # ============================================
+    
+    # 1. Redireciona HTTP para HTTPS (obrigatório)
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} ^(www\.)?paguemax\.com$ [NC]
+    RewriteRule ^(.*)$ https://paguemax.com%{REQUEST_URI} [L,R=301]
+    
+    # 2. Redireciona www para não-www (opcional - remove www)
+    RewriteCond %{HTTPS} on
+    RewriteCond %{HTTP_HOST} ^www\.paguemax\.com$ [NC]
+    RewriteRule ^(.*)$ https://paguemax.com%{REQUEST_URI} [L,R=301]
+    
+    # 3. Redireciona outros domínios para paguemax.com (se necessário)
+    # Descomente as linhas abaixo se quiser redirecionar outros domínios
+    # RewriteCond %{HTTP_HOST} !^paguemax\.com$ [NC]
+    # RewriteCond %{HTTP_HOST} !^www\.paguemax\.com$ [NC]
+    # RewriteRule ^(.*)$ https://paguemax.com%{REQUEST_URI} [L,R=301]
+    
+    # ============================================
+    # REDIRECIONAMENTO PARA PASTA PUBLIC
+    # ============================================
+    # Redireciona TUDO para a pasta public
+    # Isso é necessário quando o DocumentRoot aponta para public_html em vez de public_html/public
+    
+    # Não redireciona se já estiver em /public/
+    RewriteCond %{REQUEST_URI} !^/public/
+    
+    # Não redireciona se for um arquivo ou diretório existente na raiz
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Redireciona tudo para /public/
+    RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>
+
+# ============================================
+# SEGURANÇA E PERFORMANCE
+# ============================================
+
+# Força HTTPS (segurança adicional)
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Desabilita listagem de diretórios
+Options -Indexes
+
+# Protege arquivos sensíveis
+<FilesMatch "^(\.env|\.git|composer\.(json|lock)|package\.json|\.htaccess)$">
+    Require all denied
+</FilesMatch>

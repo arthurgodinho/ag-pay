@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\Transaction;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class PaymentReceived
+{
+    use Dispatchable, SerializesModels;
+
+    public $transaction;
+
+    public function __construct($transaction)
+    {
+        $this->transaction = $transaction;
+    }
+}
+

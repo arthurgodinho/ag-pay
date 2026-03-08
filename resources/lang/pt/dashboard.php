@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title' => 'Dashboard',
+    'welcome' => 'Boas vindas',
+    'welcome_back' => 'Bem-vindo de volta',
+    'balance' => 'Saldo',
+    'available_balance' => 'Saldo Disponível',
+    'available_balance_desc' => 'Saldo disponível para saque',
+    'frozen_balance' => 'Saldo Congelado',
+    'frozen_balance_desc' => 'Saldo em análise ou aguardando liberação',
+    'received_today' => 'Recebido Hoje',
+    'received_today_desc' => 'Total faturado no dia',
+    'precautionary_lock' => 'Bloqueio Cautelar',
+    'precautionary_lock_desc' => 'Valor retido por segurança',
+    'total_balance' => 'Saldo Total',
+    'total_billing' => 'Faturamento Total',
+    'total_billing_desc' => 'Valor total de vendas',
+    'hide_show_balances' => 'Ocultar/Mostrar Saldos',
+    'balance_limit' => 'Limite de Saldo',
+    'you_were_blocked' => 'Você foi bloqueado',
+    'contact_manager_info' => 'Entre em contato com seu gerente para mais informações.',
+    'talk_to_manager' => 'Fale com seu Gerente',
+    'kyc_rejected' => 'Verificação rejeitada.',
+    'resubmit' => 'Enviar novamente',
+    'complete_kyc' => 'Complete sua verificação de identidade',
+    'transactions' => 'Transações',
+    'view_all' => 'Ver todas',
+];
+

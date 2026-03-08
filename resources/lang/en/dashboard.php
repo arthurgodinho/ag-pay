@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'title' => 'Dashboard',
+    'welcome' => 'Welcome',
+    'welcome_back' => 'Welcome back',
+    'balance' => 'Balance',
+    'available_balance' => 'Available Balance',
+    'available_balance_desc' => 'Balance available for withdrawal',
+    'frozen_balance' => 'Frozen Balance',
+    'frozen_balance_desc' => 'Balance under review or awaiting release',
+    'received_today' => 'Received Today',
+    'received_today_desc' => 'Total billed today',
+    'precautionary_lock' => 'Precautionary Lock',
+    'precautionary_lock_desc' => 'Amount retained for security',
+    'total_balance' => 'Total Balance',
+    'total_billing' => 'Total Billing',
+    'total_billing_desc' => 'Total sales value',
+    'hide_show_balances' => 'Hide/Show Balances',
+    'balance_limit' => 'Balance Limit',
+    'you_were_blocked' => 'You were blocked',
+    'contact_manager_info' => 'Contact your manager for more information.',
+    'talk_to_manager' => 'Talk to your Manager',
+    'kyc_rejected' => 'Verification rejected.',
+    'resubmit' => 'Resubmit',
+    'complete_kyc' => 'Complete your identity verification',
+    'transactions' => 'Transactions',
+    'view_all' => 'View all',
+    'blocked_title' => 'Account Blocked',
+    'blocked_message' => 'Your account has been blocked. Please contact support for assistance.',
+];
+

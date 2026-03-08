@@ -1,0 +1,60 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes +FollowSymLinks
+    </IfModule>
+
+    RewriteEngine On
+
+    # ============================================
+    # REDIRECIONAMENTOS DE DOMÍNIO E PROTOCOLO
+    # ============================================
+    
+    # 1. Redireciona HTTP para HTTPS (obrigatório)
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} ^(www\.)?paguemax\.com$ [NC]
+    RewriteRule ^(.*)$ https://paguemax.com%{REQUEST_URI} [L,R=301]
+    
+    # 2. Redireciona www para não-www (remove www)
+    RewriteCond %{HTTPS} on
+    RewriteCond %{HTTP_HOST} ^www\.paguemax\.com$ [NC]
+    RewriteRule ^(.*)$ https://paguemax.com%{REQUEST_URI} [L,R=301]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# ============================================
+# SEGURANÇA E PERFORMANCE
+# ============================================
+
+# Força HTTPS (segurança adicional)
+<IfModule mod_headers.c>
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Desabilita listagem de diretórios
+Options -Indexes
+
+# Protege arquivos sensíveis
+<FilesMatch "^(\.env|\.git|composer\.(json|lock)|package\.json|\.htaccess)$">
+    Require all denied
+</FilesMatch>
