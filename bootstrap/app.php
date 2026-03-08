@@ -24,6 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'api/webhooks/*',
         ]);
 
+        $middleware->trustProxies(at: '*');
+
         // Aplica o middleware de locale globalmente
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,

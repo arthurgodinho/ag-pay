@@ -78,5 +78,31 @@ class ThemeHelper
             }
         ";
     }
+
+    /**
+     * Gera script de configuração para o Tailwind CDN
+     */
+    public static function generateTailwindConfig(): string
+    {
+        $colors = self::getThemeColors();
+        
+        return "
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            'theme-primary': '{$colors['primary']}',
+                            'theme-secondary': '{$colors['secondary']}',
+                            'theme-accent': '{$colors['accent']}',
+                            'theme-background': '{$colors['background']}',
+                            'theme-sidebar': '{$colors['sidebar_bg']}',
+                            'theme-card': '{$colors['card_bg']}',
+                            'theme-text': '{$colors['text']}',
+                        }
+                    }
+                }
+            }
+        ";
+    }
 }
 

@@ -19,6 +19,61 @@ class SystemConfigController extends Controller
      */
     public function index(): View
     {
+        // Contato do Gerente
+        $default_manager_name = Setting::get('default_manager_name', 'Suporte PagueMax');
+        $default_manager_email = Setting::get('default_manager_email', 'suporte@paguemax.com');
+        $default_whatsapp = Setting::get('default_whatsapp', '');
+        $default_manager_photo = Setting::get('default_manager_photo', '');
+
+        // Limites para Pessoa Física (CPF)
+        $limit_pf_daily = Setting::get('limit_pf_daily', '10000.00');
+        $limit_pf_withdrawal = Setting::get('limit_pf_withdrawal', '10000.00');
+        $withdrawals_per_day_pf = Setting::get('withdrawals_per_day_pf', '3');
+
+        // Limites para Pessoa Jurídica (CNPJ)
+        $limit_pj_daily = Setting::get('limit_pj_daily', '50000.00');
+        $limit_pj_withdrawal = Setting::get('limit_pj_withdrawal', '50000.00');
+        $withdrawals_per_day_pj = Setting::get('withdrawals_per_day_pj', '3');
+
+        // Taxas Cash-In
+        $cashin_pix_fixo = Setting::get('cashin_pix_fixo', '1.00');
+        $cashin_pix_percentual = Setting::get('cashin_pix_percentual', '3.00');
+        $cashin_pix_minima = Setting::get('cashin_pix_minima', '0.00');
+        $cashin_card_fixo = Setting::get('cashin_card_fixo', '1.00');
+        $cashin_card_percentual = Setting::get('cashin_card_percentual', '6.00');
+        $cashin_card_minima = Setting::get('cashin_card_minima', '0.00');
+        $deposit_min_value = Setting::get('deposit_min_value', '10.00');
+        
+        // Taxas Cash-Out
+        $cashout_pix_percentual = Setting::get('cashout_pix_percentual', '2.00');
+        $cashout_pix_minima = Setting::get('cashout_pix_minima', '0.80');
+        $cashout_pix_fixo = Setting::get('cashout_pix_fixo', '1.00');
+        $cashout_api_percentual = Setting::get('cashout_api_percentual', '5.00');
+        $cashout_crypto_percentual = Setting::get('cashout_crypto_percentual', '7.00');
+        $withdrawal_min_value = Setting::get('withdrawal_min_value', '10.00');
+
+        // Taxas Checkout (específicas para vendas de produtos)
+        $checkout_pix_fixo = Setting::get('checkout_pix_fixo', $cashin_pix_fixo);
+        $checkout_pix_percentual = Setting::get('checkout_pix_percentual', $cashin_pix_percentual);
+        $checkout_card_fixo = Setting::get('checkout_card_fixo', $cashin_card_fixo);
+        $checkout_card_percentual = Setting::get('checkout_card_percentual', $cashin_card_percentual);
+        $checkout_boleto_fixo = Setting::get('checkout_boleto_fixo', $cashin_pix_fixo);
+        $checkout_boleto_percentual = Setting::get('checkout_boleto_percentual', $cashin_pix_percentual);
+
+        // Nome da empresa/gateway
+        $gateway_name = Setting::get('gateway_name', 'PagueMax');
+        
+        // Idioma padrão do sistema
+        $default_language = Setting::get('default_language', 'pt');
+
+        // Taxas de Afiliados
+        $affiliate_commission_percentage = Setting::get('affiliate_commission_percentage', '5.00');
+        $affiliate_commission_fixed = Setting::get('affiliate_commission_fixed', '0.00');
+        $affiliate_commission_type = Setting::get('affiliate_commission_type', 'percentage'); // percentage ou fixed
+
+        // Configuração de Biometria Facial KYC
+        $kyc_facial_biometrics_enabled = Setting::get('kyc_facial_biometrics_enabled', '1') === '1';
+
         // Personalização (Branding)
         $theme_primary_color = Setting::get('theme_primary_color', '#00F3FF');
         $theme_secondary_color = Setting::get('theme_secondary_color', '#BF00FF');
@@ -117,13 +172,13 @@ class SystemConfigController extends Controller
             'affiliate_commission_percentage' => 'nullable|numeric|min:0|max:100',
             'affiliate_commission_fixed' => 'nullable|numeric|min:0',
             // Cores e Logos
-            'theme_primary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
-            'theme_secondary_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
-            'theme_accent_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
-            'theme_background_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
-            'theme_sidebar_bg' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
-            'theme_card_bg' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
-            'theme_text_color' => 'nullable|string|regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+            'theme_primary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'theme_secondary_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'theme_accent_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'theme_background_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'theme_sidebar_bg' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'theme_card_bg' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'theme_text_color' => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
             'favicon' => 'nullable|image|mimes:jpeg,png,jpg,ico,png,webp|max:1024',
         ]);

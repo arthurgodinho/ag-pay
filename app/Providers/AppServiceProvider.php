@@ -28,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
         // Isso ajuda a encontrar bugs durante o desenvolvimento
         \Illuminate\Database\Eloquent\Model::preventLazyLoading(!app()->isProduction());
         \Illuminate\Database\Eloquent\Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+
+        // Força HTTPS em produção para evitar Mixed Content (Cloudflare/Proxy)
+        if (app()->isProduction()) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }

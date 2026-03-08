@@ -8,7 +8,7 @@
     <div class="flex items-center justify-between">
         <div>
             <h1 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-theme-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
@@ -48,7 +48,7 @@
         <!-- Tabs Navigation -->
         <div class="border-b border-slate-200">
             <nav class="flex space-x-8" aria-label="Tabs">
-                <button type="button" onclick="switchTab('geral')" id="tab-geral" class="tab-btn border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600">
+                <button type="button" onclick="switchTab('geral')" id="tab-geral" class="tab-btn border-b-2 border-theme-primary py-4 px-1 text-sm font-medium text-theme-primary">
                     Geral
                 </button>
                 <button type="button" onclick="switchTab('manager')" id="tab-manager" class="tab-btn border-b-2 border-transparent py-4 px-1 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700">
@@ -81,7 +81,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="gateway_name" class="block text-sm font-medium text-slate-600 mb-1">Nome do Sistema</label>
-                        <input type="text" id="gateway_name" name="gateway_name" value="{{ old('gateway_name', $gateway_name ?? 'PagueMax') }}" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="gateway_name" name="gateway_name" value="{{ old('gateway_name', $gateway_name ?? 'PagueMax') }}" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-theme-primary">
                     </div>
                     <div>
                         <label for="default_language" class="block text-sm font-medium text-slate-600 mb-1">Idioma Padrão</label>
@@ -93,7 +93,7 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-3 pt-4 border-t border-slate-100">
-                    <input type="checkbox" id="kyc_facial_biometrics_enabled" name="kyc_facial_biometrics_enabled" value="1" {{ (old('kyc_facial_biometrics_enabled', $kyc_facial_biometrics_enabled) ? 'checked' : '') }} class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                    <input type="checkbox" id="kyc_facial_biometrics_enabled" name="kyc_facial_biometrics_enabled" value="1" {{ (old('kyc_facial_biometrics_enabled', $kyc_facial_biometrics_enabled) ? 'checked' : '') }} class="w-4 h-4 text-theme-primary rounded border-gray-300 focus:ring-theme-primary">
                     <label for="kyc_facial_biometrics_enabled" class="text-sm font-medium text-slate-700">Habilitar Biometria Facial (KYC)</label>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                     <div class="space-y-4">
                         <div>
                             <label for="default_manager_name" class="block text-sm font-medium text-slate-600 mb-1">Nome do Gerente</label>
-                            <input type="text" id="default_manager_name" name="default_manager_name" value="{{ old('default_manager_name', $default_manager_name ?? '') }}" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="text" id="default_manager_name" name="default_manager_name" value="{{ old('default_manager_name', $default_manager_name ?? '') }}" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-theme-primary">
                         </div>
                         <div>
                             <label for="default_manager_email" class="block text-sm font-medium text-slate-600 mb-1">Email de Contato</label>
@@ -130,7 +130,7 @@
                                 @endif
                             </div>
                             <div class="flex-1">
-                                <input type="file" name="default_manager_photo" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors">
+                                <input type="file" name="default_manager_photo" accept="image/*" class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-theme-primary/10 file:text-theme-primary hover:file:bg-theme-primary/20 transition-colors">
                                 <p class="text-xs text-slate-500 mt-2">Recomendado: 500x500px. Formatos: JPG, PNG.</p>
                             </div>
                         </div>
@@ -156,7 +156,7 @@
                     </div>
                     <div>
                         <label for="deposit_min_value" class="block text-sm font-medium text-slate-600 mb-1">Depósito Mínimo (R$)</label>
-                        <input type="number" id="deposit_min_value" name="deposit_min_value" value="{{ old('deposit_min_value', $deposit_min_value ?? '10.00') }}" step="0.01" min="0" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="number" id="deposit_min_value" name="deposit_min_value" value="{{ old('deposit_min_value', $deposit_min_value ?? '10.00') }}" step="0.01" min="0" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-theme-primary">
                     </div>
                 </div>
             </div>
@@ -226,7 +226,7 @@
                             </div>
                             <div>
                                 <label for="withdrawals_per_day_pj" class="block text-xs font-medium text-slate-600 mb-1">Saques por Dia</label>
-                                <input type="number" id="withdrawals_per_day_pj" name="withdrawals_per_day_pj" value="{{ old('withdrawals_per_day_pj', $withdrawals_per_day_pj ?? '3') }}" min="1" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <input type="number" id="withdrawals_per_day_pj" name="withdrawals_per_day_pj" value="{{ old('withdrawals_per_day_pj', $withdrawals_per_day_pj ?? '3') }}" min="1" required class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-theme-primary">
                             </div>
                         </div>
                     </div>
@@ -241,7 +241,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div>
                             <label for="affiliate_commission_type" class="block text-sm font-medium text-slate-600 mb-1">Tipo de Comissão</label>
-                            <select id="affiliate_commission_type" name="affiliate_commission_type" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <select id="affiliate_commission_type" name="affiliate_commission_type" class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-theme-primary">
                                 <option value="percentage" {{ (old('affiliate_commission_type', $affiliate_commission_type ?? 'percentage') == 'percentage') ? 'selected' : '' }}>Porcentagem (%)</option>
                                 <option value="fixed" {{ (old('affiliate_commission_type', $affiliate_commission_type ?? 'percentage') == 'fixed') ? 'selected' : '' }}>Valor Fixo (R$)</option>
                             </select>
@@ -267,7 +267,7 @@
                     <div class="space-y-6">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
                             <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                                <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <svg class="w-4 h-4 text-theme-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                 Identidade Visual
                             </h3>
                             <div class="space-y-4">
@@ -281,7 +281,7 @@
                                                 <span class="text-[10px] text-slate-400">Sem logo</span>
                                             @endif
                                         </div>
-                                        <input type="file" name="logo" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-colors">
+                                        <input type="file" name="logo" accept="image/*" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-semibold file:bg-theme-primary/10 file:text-theme-primary hover:file:bg-theme-primary/20 transition-colors">
                                     </div>
                                 </div>
                                 <div>
@@ -304,7 +304,7 @@
                     <!-- Colors Section -->
                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-100">
                         <h3 class="text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                            <svg class="w-4 h-4 text-theme-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
                             Esquema de Cores
                         </h3>
                         <div class="grid grid-cols-2 gap-4">
@@ -358,7 +358,7 @@
         </div>
 
         <div class="flex justify-end pt-4">
-            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-xl shadow-sm transition-colors text-sm">
+            <button type="submit" class="bg-theme-primary hover:opacity-90 text-white font-medium py-2 px-6 rounded-xl shadow-sm transition-all text-sm">
                 Salvar Configurações
             </button>
         </div>
@@ -377,14 +377,14 @@
         
         // Reset all buttons
         document.querySelectorAll('.tab-btn').forEach(el => {
-            el.classList.remove('border-blue-500', 'text-blue-600');
+            el.classList.remove('border-theme-primary', 'text-theme-primary');
             el.classList.add('border-transparent', 'text-slate-500');
         });
         
         // Highlight selected button
         const btn = document.getElementById('tab-' + tabId);
         btn.classList.remove('border-transparent', 'text-slate-500');
-        btn.classList.add('border-blue-500', 'text-blue-600');
+        btn.classList.add('border-theme-primary', 'text-theme-primary');
     }
 </script>
 @endsection
