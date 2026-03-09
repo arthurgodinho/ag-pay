@@ -38,8 +38,9 @@ class GatewayFactory
             'paguemax' => new PagueMaxGateway($clientId, $clientSecret), // client_id + token_secret
             'zoompag' => new ZoomPagGateway($clientSecret), // client_secret = API Key (client_id ignored)
             'pluggou' => new PluggouGateway($clientId, $clientSecret), // client_id = Public Key, client_secret = Secret Key
+            'pagarme' => new PagarmeGateway($clientSecret), // client_secret = Secret Key (V5)
             'efi' => new EfiGateway($clientId, $clientSecret), // Fallback se passar pelo if acima (não deve ocorrer, mas por segurança)
-            default => throw new InvalidArgumentException("Gateway '{$provider}' não é suportado. Gateways disponíveis: bspay, venit, podpay, hypercash, efi, paguemax, zoompag, pluggou"),
+            default => throw new InvalidArgumentException("Gateway '{$provider}' não é suportado. Gateways disponíveis: bspay, venit, podpay, hypercash, efi, paguemax, zoompag, pluggou, pagarme"),
         };
     }
 }

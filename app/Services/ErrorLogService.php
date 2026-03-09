@@ -89,12 +89,12 @@ class ErrorLogService
         ?Throwable $exception = null
     ): ErrorLog {
         return self::log(
-            title: 'Erro no Processamento de Pagamento',
-            message: $message,
-            type: 'payment',
-            level: 'error',
-            context: array_merge($context ?? [], ['transaction_id' => $transactionId]),
-            exception: $exception
+            'Erro no Processamento de Pagamento',
+            $message,
+            'payment',
+            'error',
+            array_merge($context ?? [], ['transaction_id' => $transactionId]),
+            $exception
         );
     }
 
@@ -108,12 +108,12 @@ class ErrorLogService
         ?Throwable $exception = null
     ): ErrorLog {
         return self::log(
-            title: 'Erro no Processamento de Saque',
-            message: $message,
-            type: 'withdrawal',
-            level: 'error',
-            context: array_merge($context ?? [], ['transaction_id' => $transactionId]),
-            exception: $exception
+            'Erro no Processamento de Saque',
+            $message,
+            'withdrawal',
+            'error',
+            array_merge($context ?? [], ['transaction_id' => $transactionId]),
+            $exception
         );
     }
 
@@ -127,12 +127,12 @@ class ErrorLogService
         ?Throwable $exception = null
     ): ErrorLog {
         return self::log(
-            title: 'Erro na Integração com API' . ($provider ? ' - ' . $provider : ''),
-            message: $message,
-            type: 'api',
-            level: 'error',
-            context: array_merge($context ?? [], ['provider' => $provider]),
-            exception: $exception
+            'Erro na Integração com API' . ($provider ? ' - ' . $provider : ''),
+            $message,
+            'api',
+            'error',
+            array_merge($context ?? [], ['provider' => $provider]),
+            $exception
         );
     }
 
@@ -146,12 +146,12 @@ class ErrorLogService
         ?Throwable $exception = null
     ): ErrorLog {
         return self::log(
-            title: 'Erro ao Criar/Processar Produto',
-            message: $message,
-            type: 'product',
-            level: 'error',
-            context: $context,
-            exception: $exception
+            'Erro ao Criar/Processar Produto',
+            $message,
+            'product',
+            'error',
+            $context,
+            $exception
         );
     }
 
@@ -165,12 +165,12 @@ class ErrorLogService
         ?Throwable $exception = null
     ): ErrorLog {
         return self::log(
-            title: $title,
-            message: $message,
-            type: 'system',
-            level: 'critical',
-            context: $context,
-            exception: $exception
+            $title,
+            $message,
+            'system',
+            'critical',
+            $context,
+            $exception
         );
     }
 
@@ -193,12 +193,12 @@ class ErrorLogService
         ]);
 
         return self::log(
-            title: 'Erro no Processamento de Webhook - ' . ucfirst($webhookType),
-            message: $message,
-            type: 'api',
-            level: 'error',
-            context: $contextData,
-            exception: $exception
+            'Erro no Processamento de Webhook - ' . ucfirst($webhookType),
+            $message,
+            'api',
+            'error',
+            $contextData,
+            $exception
         );
     }
 
@@ -211,11 +211,11 @@ class ErrorLogService
         ?string $reason = null
     ): ErrorLog {
         return self::log(
-            title: 'Webhook Não Identificado - ' . ucfirst($provider),
-            message: $reason ?? 'Requisição recebida mas não foi possível identificar ou processar a transação.',
-            type: 'api',
-            level: 'warning',
-            context: [
+            'Webhook Não Identificado - ' . ucfirst($provider),
+            $reason ?? 'Requisição recebida mas não foi possível identificar ou processar a transação.',
+            'api',
+            'warning',
+            [
                 'provider' => $provider,
                 'payload' => $payload,
                 'ip_address' => request()->ip(),

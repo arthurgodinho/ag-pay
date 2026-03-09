@@ -44,45 +44,7 @@ class WebhookController extends Controller
                     'message' => 'MED processado com sucesso',
                     'chargeback_id' => $chargeback->id,
                 ], 200);
-                public function pluggou(Request $request): JsonResponse
-    {
-        try {
-            Log::info('Pluggou Webhook received', ['payload' => $request->all()]);
-            $payload = $request->all();
-            
-            if (empty($payload) || !isset($payload['data'])) {
-                return response()->json(['success' => false, 'message' => 'Invalid payload'], 400);
             }
-
-            $data = $payload['data'];
-            $pluggouId = $data['id'] ?? null;
-            $eventType = $payload['event_type'] ?? null;
-            
-            if (!$pluggouId) {
-                return response()->json(['success' => false, 'message' => 'Transaction ID not found'], 400);
-            }
-
-            if ($eventType === 'withdrawal') {
-                $withdrawal = Withdrawal::where('external_id', $pluggouId)->first();
-                if ($withdrawal) {
-                    return $this->processPagueMaxCashOut($data, $withdrawal); 
-                }
-            } else {
-                // Transaction / Cash-in
-                $transaction = Transaction::where('external_id', $pluggouId)->first();
-                if ($transaction) {
-                    return $this->processPagueMaxCashIn($data, $transaction); 
-                }
-            }
-
-            return response()->json(['success' => true, 'message' => 'Entity not found'], 200);
-
-        } catch (\Exception $e) {
-            Log::error('Pluggou Webhook Error', ['error' => $e->getMessage()]);
-            return response()->json(['success' => false], 500);
-        }
-    }
-}
 
             return response()->json([
                 'success' => false,
@@ -90,14 +52,14 @@ class WebhookController extends Controller
             ], 404);
         } catch (\Exception $e) {
             ErrorLogService::logWebhookError(
-                message: 'Erro ao processar webhook de chargeback/MED: ' . $e->getMessage(),
-                webhookType: 'Chargeback',
-                payload: $request->all(),
-                context: [
+                'Erro ao processar webhook de chargeback/MED: ' . $e->getMessage(),
+                'Chargeback',
+                $request->all(),
+                [
                     'transaction_id' => $request->transaction_id,
                     'amount' => $request->amount,
                 ],
-                exception: $e
+                $e
             );
 
             Log::error('Error processing chargeback webhook', [
@@ -150,9 +112,9 @@ class WebhookController extends Controller
             
             if ($isPaid) {
                 ErrorLogService::logUnidentifiedWebhook(
-                    provider: 'PagueMax',
-                    payload: $data,
-                    reason: "Pagamento recebido mas transação não encontrada. external_id: {$externalId}"
+                    'PagueMax',
+                    $data,
+                    "Pagamento recebido mas transação não encontrada. external_id: {$externalId}"
                 );
             }
 
@@ -373,8 +335,6 @@ class WebhookController extends Controller
                     } catch (\Exception $e) {
                         Log::error('Erro ao criar notificação de saque', ['error' => $e->getMessage()]);
                     }
-                        Log::error('PagueMax: Erro ao criar notificação de saque', ['error' => $e->getMessage()]);
-                    }
 
                     try {
                         $webhookService = app(\App\Services\WebhookService::class);
@@ -524,6 +484,108 @@ class WebhookController extends Controller
             return response()->json(['success' => true, 'message' => 'Transaction not found'], 200);
         } catch (\Exception $e) {
             Log::error('ZoomPag Webhook Error', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false], 500);
+        }
+    }
+
+    /**
+     * Recebe notificações da Pluggou
+     */
+    public function pluggou(Request $request): JsonResponse
+    {
+        try {
+            Log::info('Pluggou Webhook received', ['payload' => $request->all()]);
+            $payload = $request->all();
+            
+            if (empty($payload) || !isset($payload['data'])) {
+                return response()->json(['success' => false, 'message' => 'Invalid payload'], 400);
+            }
+
+            $data = $payload['data'];
+            $pluggouId = $data['id'] ?? null;
+            $eventType = $payload['event_type'] ?? null;
+            
+            if (!$pluggouId) {
+                return response()->json(['success' => false, 'message' => 'Transaction ID not found'], 400);
+            }
+
+            if ($eventType === 'withdrawal') {
+                $withdrawal = Withdrawal::where('external_id', $pluggouId)->first();
+                if ($withdrawal) {
+                    return $this->processPagueMaxCashOut($data, $withdrawal); 
+                }
+            } else {
+                // Transaction / Cash-in
+                $transaction = Transaction::where('external_id', $pluggouId)->first();
+                if ($transaction) {
+                    return $this->processPagueMaxCashIn($data, $transaction); 
+                }
+            }
+
+            return response()->json(['success' => true, 'message' => 'Entity not found'], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Pluggou Webhook Error', ['error' => $e->getMessage()]);
+            return response()->json(['success' => false], 500);
+        }
+    }
+
+    /**
+     * Recebe notificações da Pagar.me
+     */
+    public function pagarme(Request $request): JsonResponse
+    {
+        try {
+            \Log::info('Pagar.me Webhook RAW Payload', ['raw' => $request->getContent()]);
+            Log::info('Pagar.me Webhook received', ['payload' => $request->all()]);
+            $payload = $request->all();
+            
+            if (empty($payload) || !isset($payload['data'])) {
+                return response()->json(['success' => false, 'message' => 'Invalid payload'], 400);
+            }
+
+            $event = $payload['type'] ?? $payload['event'] ?? '';
+            $data = $payload['data'];
+            $externalId = $data['code'] ?? null;
+            
+            if (!$externalId) {
+                return response()->json(['success' => false, 'message' => 'External ID (code) not found'], 400);
+            }
+
+            $transaction = Transaction::where('external_id', $externalId)
+                ->orWhere('uuid', $externalId)
+                ->first();
+
+            \Log::info('Pagar.me Webhook: Pesquisa de transação', [
+                'external_id_found' => $externalId,
+                'transaction_exists' => $transaction ? true : false,
+                'transaction_id' => $transaction ? $transaction->id : null,
+                'status_atual' => $transaction ? $transaction->status : null
+            ]);
+
+            if ($transaction) {
+                if (in_array($event, ['order.paid', 'charge.paid'])) {
+                    // Normaliza dados para o processador genérico
+                    $normalizedData = [
+                        'status' => 'paid',
+                        'amount' => ($data['amount'] ?? 0) / 100,
+                        'payer_name' => $data['customer']['name'] ?? 'Cliente',
+                    ];
+                    return $this->processPagueMaxCashIn($normalizedData, $transaction);
+                }
+                
+                if (in_array($event, ['charge.payment_failed', 'order.canceled'])) {
+                    if ($transaction->status === 'pending') {
+                        $transaction->update(['status' => 'failed']);
+                    }
+                    return response()->json(['success' => true, 'message' => 'Transaction updated']);
+                }
+            }
+
+            return response()->json(['success' => true, 'message' => 'Event ignored or handled'], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Pagar.me Webhook Error', ['error' => $e->getMessage()]);
             return response()->json(['success' => false], 500);
         }
     }

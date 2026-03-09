@@ -314,7 +314,17 @@ class CheckoutController extends Controller
                 $postbackRoute = 'api.webhooks.pluggou';
             } elseif ($gatewayConfig->provider_name === 'zoompag') {
                 $postbackRoute = 'api.webhooks.zoompag';
+            } elseif ($gatewayConfig->provider_name === 'pagarme') {
+                $postbackRoute = 'api.webhooks.pagarme';
             }
+
+            $postbackUrl = WebhookUrlHelper::generateUrl($postbackRoute);
+            
+            \Log::info('CheckoutController: URL de postback gerada', [
+                'route' => $postbackRoute,
+                'url' => $postbackUrl,
+                'transaction_uuid' => $transactionId->toString()
+            ]);
 
             $payerData = [
                 'name' => $request->name,
@@ -322,7 +332,7 @@ class CheckoutController extends Controller
                 'cpf' => $request->cpf,
                 'phone' => $request->phone,
                 'external_id' => $externalIdForGateway,
-                'postback_url' => WebhookUrlHelper::generateUrl($postbackRoute),
+                'postback_url' => $postbackUrl,
                 'description' => 'Pagamento Checkout - ' . $product->name,
             ];
 
@@ -490,6 +500,32 @@ class CheckoutController extends Controller
             ]);
             return response()->json(['success' => false, 'message' => 'Erro ao processar pagamento: ' . $e->getMessage()], 500);
         }
+    }
+
+    /**
+     * Check transaction status (public route for checkout polling).
+     */
+    public function checkPaymentStatus($uuid): JsonResponse
+    {
+        $transaction = Transaction::where('uuid', $uuid)->first();
+
+        if (!$transaction) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transação não encontrada.'
+            ], 404);
+        }
+
+        // Mapear status aceitos como "pago/completado"
+        $isCompleted = in_array($transaction->status, ['completed', 'paid', 'approved']);
+
+        return response()->json([
+            'success' => true,
+            'status' => $transaction->status,
+            'completed' => $isCompleted,
+            'amount_gross' => $transaction->amount_gross,
+            'type' => $transaction->type,
+        ]);
     }
 }
 

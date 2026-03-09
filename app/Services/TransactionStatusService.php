@@ -90,8 +90,8 @@ class TransactionStatusService
             ->where('is_active_for_pix', true)
             ->first();
 
-        if (!$gatewayConfig || empty($gatewayConfig->client_id) || empty($gatewayConfig->client_secret)) {
-            Log::warning('TransactionStatusService: Gateway não configurado ou inativo', [
+        if (!$gatewayConfig || empty($gatewayConfig->client_secret) || (!in_array(strtolower($gatewayConfig->provider_name), ['hypercash', 'zoompag', 'pagarme']) && empty($gatewayConfig->client_id))) {
+            Log::warning('TransactionStatusService: Gateway não configurado ou inativo (faltando credenciais)', [
                 'transaction_id' => $transaction->id,
                 'gateway' => $transaction->gateway_provider,
             ]);
@@ -164,11 +164,16 @@ class TransactionStatusService
         }
 
         // Normaliza status baseado no gateway
-        return match(strtolower($gatewayProvider)) {
-            'bspay' => $this->normalizeBsPayStatus($status),
-            'venit' => $this->normalizeVenitStatus($status),
-            default => 'pending',
-        };
+        switch (strtolower($gatewayProvider)) {
+            case 'bspay':
+                return $this->normalizeBsPayStatus($status);
+            case 'venit':
+                return $this->normalizeVenitStatus($status);
+            case 'pagarme':
+                return $this->normalizePagarmeStatus($status);
+            default:
+                return 'pending';
+        }
     }
 
     /**
@@ -178,12 +183,23 @@ class TransactionStatusService
     {
         $statusStr = is_numeric($status) ? (string) $status : strtoupper((string) $status);
         
-        return match($statusStr) {
-            'PAID', '1', 'CONFIRMED', 'APPROVED' => 'completed',
-            'PENDING', '0', 'WAITING' => 'pending',
-            'FAILED', 'REJECTED', 'CANCELLED' => 'failed',
-            default => 'pending',
-        };
+        switch ($statusStr) {
+            case 'PAID':
+            case '1':
+            case 'CONFIRMED':
+            case 'APPROVED':
+                return 'completed';
+            case 'PENDING':
+            case '0':
+            case 'WAITING':
+                return 'pending';
+            case 'FAILED':
+            case 'REJECTED':
+            case 'CANCELLED':
+                return 'failed';
+            default:
+                return 'pending';
+        }
     }
 
     /**
@@ -193,17 +209,50 @@ class TransactionStatusService
     {
         $statusStr = strtolower((string) $status);
         
-        return match($statusStr) {
-            'paid' => 'completed',
-            'waiting_payment' => 'pending',
-            'refused', 'failed' => 'failed',
-            'canceled', 'cancelled' => 'cancelled',
-            'expired' => 'expired',
-            default => 'pending',
-        };
+        switch ($statusStr) {
+            case 'paid':
+                return 'completed';
+            case 'waiting_payment':
+                return 'pending';
+            case 'refused':
+            case 'failed':
+                return 'failed';
+            case 'canceled':
+            case 'cancelled':
+                return 'cancelled';
+            case 'expired':
+                return 'expired';
+            default:
+                return 'pending';
+        }
     }
 
-
+    /**
+     * Normaliza status da Pagar.me
+     */
+    private function normalizePagarmeStatus($status): string
+    {
+        $statusStr = strtolower((string) $status);
+        
+        switch ($statusStr) {
+            case 'paid':
+            case 'completed':
+            case 'approved':
+                return 'completed';
+            case 'pending':
+            case 'waiting_payment':
+            case 'processing':
+                return 'pending';
+            case 'failed':
+            case 'refused':
+            case 'canceled':
+            case 'cancelled':
+            case 'expired':
+                return 'failed';
+            default:
+                return 'pending';
+        }
+    }
 
     /**
      * Processa transação completada

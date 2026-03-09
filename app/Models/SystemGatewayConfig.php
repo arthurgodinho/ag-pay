@@ -51,7 +51,7 @@ class SystemGatewayConfig extends Model
                 ->where(function($query) {
                     $query->where(function($q) {
                         $q->whereNotNull('client_id')->where('client_id', '!=', '');
-                    })->orWhereIn('provider_name', ['hypercash', 'zoompag']);
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
                 })
                 ->first();
             
@@ -72,7 +72,7 @@ class SystemGatewayConfig extends Model
                 ->where(function($query) {
                     $query->where(function($q) {
                         $q->whereNotNull('client_id')->where('client_id', '!=', '');
-                    })->orWhereIn('provider_name', ['hypercash', 'zoompag']);
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
                 })
                 ->first();
             
@@ -92,7 +92,7 @@ class SystemGatewayConfig extends Model
                 ->where(function($query) {
                     $query->where(function($q) {
                         $q->whereNotNull('client_id')->where('client_id', '!=', '');
-                    })->orWhereIn('provider_name', ['hypercash', 'zoompag']);
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
                 })
                 ->first();
             
@@ -147,7 +147,7 @@ class SystemGatewayConfig extends Model
                 ->where(function($query) {
                     $query->where(function($q) {
                         $q->whereNotNull('client_id')->where('client_id', '!=', '');
-                    })->orWhereIn('provider_name', ['hypercash', 'zoompag']);
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
                 })
                 ->first();
             
@@ -180,7 +180,7 @@ class SystemGatewayConfig extends Model
                 ->where(function($query) {
                     $query->where(function($q) {
                         $q->whereNotNull('client_id')->where('client_id', '!=', '');
-                    })->orWhereIn('provider_name', ['hypercash', 'zoompag']);
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
                 })
                 ->first();
             
@@ -210,9 +210,12 @@ class SystemGatewayConfig extends Model
         if (!empty($defaultForCard)) {
             $gateway = self::where('provider_name', $defaultForCard)
                 ->where('is_active_for_card', true)
-                ->whereNotNull('client_id')
+                ->where(function($query) {
+                    $query->where(function($q) {
+                        $q->whereNotNull('client_id')->where('client_id', '!=', '');
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
+                })
                 ->whereNotNull('client_secret')
-                ->where('client_id', '!=', '')
                 ->where('client_secret', '!=', '')
                 ->first();
             
@@ -230,9 +233,12 @@ class SystemGatewayConfig extends Model
         if (!empty($globalDefault)) {
             $globalGateway = self::where('provider_name', $globalDefault)
                 ->where('is_active_for_card', true)
-                ->whereNotNull('client_id')
+                ->where(function($query) {
+                    $query->where(function($q) {
+                        $q->whereNotNull('client_id')->where('client_id', '!=', '');
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
+                })
                 ->whereNotNull('client_secret')
-                ->where('client_id', '!=', '')
                 ->where('client_secret', '!=', '')
                 ->first();
             
@@ -244,9 +250,12 @@ class SystemGatewayConfig extends Model
         // PRIORIDADE 3: Gateway marcado como padrão do sistema (is_default_for_card)
         $default = self::where('is_active_for_card', true)
             ->where('is_default_for_card', true)
-            ->whereNotNull('client_id')
+            ->where(function($query) {
+                $query->where(function($q) {
+                    $q->whereNotNull('client_id')->where('client_id', '!=', '');
+                })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
+            })
             ->whereNotNull('client_secret')
-            ->where('client_id', '!=', '')
             ->where('client_secret', '!=', '')
             ->first();
 
@@ -256,9 +265,12 @@ class SystemGatewayConfig extends Model
 
         // PRIORIDADE 4: Gateway ativo com maior prioridade
         return self::where('is_active_for_card', true)
-            ->whereNotNull('client_id')
+            ->where(function($query) {
+                $query->where(function($q) {
+                    $q->whereNotNull('client_id')->where('client_id', '!=', '');
+                })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
+            })
             ->whereNotNull('client_secret')
-            ->where('client_id', '!=', '')
             ->where('client_secret', '!=', '')
             ->orderBy('priority', 'desc')
             ->orderBy('created_at', 'desc')
@@ -304,7 +316,7 @@ class SystemGatewayConfig extends Model
                 ->where(function($query) {
                     $query->where(function($q) {
                         $q->whereNotNull('client_id')->where('client_id', '!=', '');
-                    })->orWhereIn('provider_name', ['hypercash', 'zoompag']);
+                    })->orWhereIn('provider_name', ['hypercash', 'zoompag', 'pagarme']);
                 })
                 ->first();
             

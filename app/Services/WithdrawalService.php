@@ -38,7 +38,7 @@ class WithdrawalService
                 // Tenta processar o saque via gateway configurado
                 $gatewayConfig = \App\Models\SystemGatewayConfig::getDefaultForWithdrawals($user->preferred_gateway);
                 
-                if (!$gatewayConfig || empty($gatewayConfig->client_secret) || (!in_array(strtolower($gatewayConfig->provider_name), ['hypercash', 'zoompag']) && empty($gatewayConfig->client_id))) {
+                if (!$gatewayConfig || empty($gatewayConfig->client_secret) || (!in_array(strtolower($gatewayConfig->provider_name), ['hypercash', 'zoompag', 'pagarme']) && empty($gatewayConfig->client_id))) {
                     // Se não há gateway configurado, marca como pendente para processamento manual
                     $withdrawal->update([
                         'status' => 'pending',
@@ -56,7 +56,7 @@ class WithdrawalService
                 }
 
                 // Verifica se é BsPay, Venit, PodPay, HyperCash, Efi, PagueMax, ZoomPag ou Pluggou (suportam saques PIX)
-                if (!in_array(strtolower($gatewayConfig->provider_name), ['bspay', 'venit', 'podpay', 'hypercash', 'efi', 'paguemax', 'zoompag', 'pluggou'])) {
+                if (!in_array(strtolower($gatewayConfig->provider_name), ['bspay', 'venit', 'podpay', 'hypercash', 'efi', 'paguemax', 'zoompag', 'pluggou', 'pagarme'])) {
                     $withdrawal->update([
                         'status' => 'pending',
                     ]);

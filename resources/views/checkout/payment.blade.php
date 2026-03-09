@@ -43,7 +43,7 @@
         this.checkInterval = setInterval(async () => {
             if (this.pixData && this.pixData.transaction_id) {
                 try {
-                    const response = await fetch(`/financial/transaction/check/${this.pixData.transaction_id}`);
+                    const response = await fetch(`/pay/check/${this.pixData.transaction_id}`);
                     const data = await response.json();
                     if (data.success && (data.status === 'paid' || data.status === 'completed')) {
                         clearInterval(this.checkInterval);
@@ -512,8 +512,8 @@
                 <!-- Footer Info -->
                 <div class="mt-6 flex justify-center space-x-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" class="h-6" alt="Mastercard">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" class="h-6" alt="Visa">
-                    <img src="https://dph-site-data.s3.eu-west-1.amazonaws.com/storage/searchByImage/image_6af903cb32959c24d02bcd6d6ed42356.png" class="h-6" alt="Pix">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Visa_Inc._logo_%281992%E2%80%931999%29.svg/960px-Visa_Inc._logo_%281992%E2%80%931999%29.svg.png" class="h-6" alt="Visa">
+                    <img src="https://img.icons8.com/color/512/pix.png" class="h-6" alt="Pix">
                 </div>
             </div>
         </div>

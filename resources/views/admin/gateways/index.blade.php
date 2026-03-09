@@ -60,6 +60,7 @@
                             'paguemax' => ['credential1' => ['label' => 'Client ID', 'placeholder' => 'Digite o Client ID'], 'credential2' => ['label' => 'Token Secret', 'placeholder' => 'Digite o Token Secret']],
                             'zoompag' => ['credential1' => ['label' => 'Ignorar (Client ID)', 'placeholder' => 'Pode deixar em branco'], 'credential2' => ['label' => 'Chave Secreta (API Key)', 'placeholder' => 'Digite a Chave Secreta']],
                             'pluggou' => ['credential1' => ['label' => 'Public Key', 'placeholder' => 'Digite a Public Key'], 'credential2' => ['label' => 'Secret Key', 'placeholder' => 'Digite a Secret Key']],
+                            'pagarme' => ['credential1' => ['label' => 'Ignorar (Client ID)', 'placeholder' => 'Pode deixar em branco'], 'credential2' => ['label' => 'Secret Key (API Key)', 'placeholder' => 'Digite a Secret Key']],
                         ];
                         $labels = $gatewayLabels[$key] ?? ['credential1' => ['label' => 'Client ID', 'placeholder' => 'Digite o Client ID'], 'credential2' => ['label' => 'Client Secret', 'placeholder' => 'Digite o Client Secret']];
                     @endphp
@@ -110,7 +111,7 @@
                                         <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                                     </label>
                                 </div>
-                                @if(in_array($key, ['hypercash', 'paguemax']))
+                                @if(in_array($key, ['hypercash', 'paguemax', 'pagarme']))
                                 <div class="flex items-center justify-between p-4 bg-slate-50 rounded-lg border border-slate-200">
                                     <div>
                                         <label class="text-sm font-bold text-slate-900">Ativo para Cartão</label>

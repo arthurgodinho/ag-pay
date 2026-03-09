@@ -263,6 +263,7 @@ class AdminController extends Controller
             'zoompag' => 'ZoomPag',
             'efi' => 'Efi Bank',
             'pluggou' => 'Pluggou',
+            'pagarme' => 'Pagar.me',
         ];
 
         // Busca os adquirentes padrão
@@ -317,7 +318,7 @@ class AdminController extends Controller
             // Valida os campos, permitindo valores vazios para os selects de gateway padrão
             $validated = $request->validate([
                 'gateways' => 'required|array',
-                'gateways.*.provider_name' => 'required|string|in:bspay,venit,podpay,hypercash,efi,paguemax,zoompag,pluggou',
+                'gateways.*.provider_name' => 'required|string|in:bspay,venit,podpay,hypercash,efi,paguemax,zoompag,pluggou,pagarme',
                 'gateways.*.client_id' => 'nullable|string|max:255',
                 'gateways.*.client_secret' => 'nullable|string',
                 'gateways.*.pix_key' => 'nullable|string|max:255',
@@ -346,7 +347,7 @@ class AdminController extends Controller
         }
         
         // Valida manualmente os valores dos gateways padrão se não forem vazios
-        $allowedGateways = ['bspay', 'venit', 'podpay', 'hypercash', 'efi', 'paguemax', 'zoompag', 'pluggou'];
+        $allowedGateways = ['bspay', 'venit', 'podpay', 'hypercash', 'efi', 'paguemax', 'zoompag', 'pluggou', 'pagarme'];
         $gatewayFields = [
             'default_gateway_for_all_users',
             'default_gateway_for_cashin_pix',

@@ -184,6 +184,7 @@ Route::get('/pagina/{slug}', [StaticPageController::class, 'show'])->name('stati
 // Rota Pública de Checkout
 Route::get('/pay/{uuid}', [\App\Http\Controllers\CheckoutController::class, 'showPublicCheckout'])->name('checkout.public');
 Route::post('/pay/{uuid}/process', [\App\Http\Controllers\CheckoutController::class, 'processPayment'])->name('checkout.process');
+Route::get('/pay/check/{uuid}', [\App\Http\Controllers\CheckoutController::class, 'checkPaymentStatus'])->name('checkout.check');
 
 // Fallback/Safety route for incorrect POST requests to /pay/{uuid}
 Route::post('/pay/{uuid}', [\App\Http\Controllers\CheckoutController::class, 'processPayment']);

@@ -75,5 +75,8 @@ Route::post('/webhooks/asaas', [\App\Http\Controllers\Api\WebhookController::cla
 // Webhook público para receber notificações da ZoomPag
 Route::post('/webhooks/zoompag', [\App\Http\Controllers\Api\WebhookController::class, 'zoompag'])->name('api.webhooks.zoompag');
 
+// Webhook público para receber notificações da Pagar.me
+Route::post('/webhooks/pagarme', [\App\Http\Controllers\Api\WebhookController::class, 'pagarme'])->name('api.webhooks.pagarme');
+
 
 
